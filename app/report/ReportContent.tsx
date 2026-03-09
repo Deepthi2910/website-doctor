@@ -62,7 +62,8 @@ export default function ReportContent() {
       setError("");
       setImageStatus("loading");
 
-      const screenshotPath = `https://image.thum.io/get/width/1200/${url}`;
+      const normalizedUrl = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+      const screenshotPath = `https://image.thum.io/get/width/1200/noanimate/?url=${encodeURIComponent(normalizedUrl)}`;
       setScreenshotUrl(screenshotPath);
 
       try {
