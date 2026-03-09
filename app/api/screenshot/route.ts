@@ -1,15 +1,39 @@
 import puppeteer from "puppeteer";
 
+function normalizeUrl(input: string) {
+  const trimmed = input.trim();
+
+  if (!trimmed) {
+    throw new Error("Empty URL");
+  }
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+
+  return `https://${trimmed}`;
+}
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const url = searchParams.get("url");
+  const rawUrl = searchParams.get("url");
 
-  if (!url) {
+  if (!rawUrl) {
     return new Response("Missing url", { status: 400 });
   }
 
+  let targetUrl: string;
+
   try {
-    const browser = await puppeteer.launch({
+    targetUrl = normalizeUrl(rawUrl);
+  } catch {
+    return new Response("Invalid url", { status: 400 });
+  }
+
+  let browser;
+
+  try {
+    browser = await puppeteer.launch({
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
@@ -19,19 +43,18 @@ export async function GET(req: Request) {
     await page.setViewport({
       width: 1280,
       height: 800,
+      deviceScaleFactor: 1,
     });
 
-    await page.goto(`https://${url}`, {
-      waitUntil: "domcontentloaded",
-      timeout: 15000,
+    await page.goto(targetUrl, {
+      waitUntil: "networkidle2",
+      timeout: 30000,
     });
 
     const screenshot = await page.screenshot({
       type: "png",
       fullPage: false,
     });
-
-    await browser.close();
 
     return new Response(Buffer.from(screenshot), {
       headers: {
@@ -41,6 +64,12 @@ export async function GET(req: Request) {
     });
   } catch (error) {
     console.error("Screenshot error:", error);
-    return new Response("Failed to capture screenshot", { status: 500 });
+    return new Response(`Failed to capture screenshot for ${targetUrl}`, {
+      status: 500,
+    });
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
   }
 }
