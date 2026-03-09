@@ -1,5 +1,5 @@
 import chromium from "@sparticuz/chromium";
-import puppeteer from "puppeteer-core";
+import puppeteerCore from "puppeteer-core";
 
 function normalizeUrl(input: string) {
   const trimmed = input.trim();
@@ -34,23 +34,48 @@ export async function GET(req: Request) {
   let browser;
 
   try {
-    browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: {
-        width: 1440,
-        height: 900,
-        deviceScaleFactor: 1,
-      },
-      executablePath: await chromium.executablePath(),
-      headless: true,
-    });
+    const isVercel = !!process.env.VERCEL;
+
+    if (isVercel) {
+      browser = await puppeteerCore.launch({
+        args: chromium.args,
+        defaultViewport: {
+          width: 1440,
+          height: 900,
+          deviceScaleFactor: 1,
+        },
+        executablePath: await chromium.executablePath(),
+        headless: true,
+      });
+    } else {
+      const puppeteer = (await import("puppeteer")).default;
+      browser = await puppeteer.launch({
+        headless: true,
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        defaultViewport: {
+          width: 1440,
+          height: 900,
+          deviceScaleFactor: 1,
+        },
+      });
+    }
 
     const page = await browser.newPage();
 
-    await page.goto(targetUrl, {
-      waitUntil: "networkidle2",
-      timeout: 30000,
+    await page.setUserAgent(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+    );
+
+    await page.setExtraHTTPHeaders({
+      "Accept-Language": "en-US,en;q=0.9",
     });
+
+    await page.goto(targetUrl, {
+      waitUntil: "domcontentloaded",
+      timeout: 45000,
+    });
+
+    await new Promise((resolve) => setTimeout(resolve, 2500));
 
     const screenshot = await page.screenshot({
       type: "png",
