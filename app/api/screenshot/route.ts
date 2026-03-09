@@ -33,7 +33,7 @@ export async function GET(req: Request) {
 
     await browser.close();
 
-    return new Response(screenshot, {
+    return new Response(Buffer.from(screenshot), {
       headers: {
         "Content-Type": "image/png",
         "Cache-Control": "no-store",
