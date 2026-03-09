@@ -1,4 +1,5 @@
-import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer-core";
 
 function normalizeUrl(input: string) {
   const trimmed = input.trim();
@@ -34,17 +35,17 @@ export async function GET(req: Request) {
 
   try {
     browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: {
+        width: 1440,
+        height: 900,
+        deviceScaleFactor: 1,
+      },
+      executablePath: await chromium.executablePath(),
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     const page = await browser.newPage();
-
-    await page.setViewport({
-      width: 1280,
-      height: 800,
-      deviceScaleFactor: 1,
-    });
 
     await page.goto(targetUrl, {
       waitUntil: "networkidle2",
@@ -64,9 +65,7 @@ export async function GET(req: Request) {
     });
   } catch (error) {
     console.error("Screenshot error:", error);
-    return new Response(`Failed to capture screenshot for ${targetUrl}`, {
-      status: 500,
-    });
+    return new Response("Failed to capture screenshot", { status: 500 });
   } finally {
     if (browser) {
       await browser.close();
