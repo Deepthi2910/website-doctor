@@ -63,7 +63,7 @@ export default function ReportContent() {
       setImageStatus("loading");
 
       const normalizedUrl = /^https?:\/\//i.test(url) ? url : `https://${url}`;
-      const screenshotPath = `https://image.thum.io/get/width/1200/noanimate/?url=${encodeURIComponent(normalizedUrl)}`;
+      const screenshotPath = `https://s.wordpress.com/mshots/v1/${encodeURIComponent(normalizedUrl)}?w=1200`;
       setScreenshotUrl(screenshotPath);
 
       try {
