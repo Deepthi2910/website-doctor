@@ -62,7 +62,12 @@ export default function ReportContent() {
       setError("");
       setImageStatus("loading");
 
+<<<<<<< HEAD
       const screenshotPath = `https://image.thum.io/get/width/1200/${url}`;
+=======
+      const normalizedUrl = /^https?:\/\//i.test(url) ? url : `https://${url}`;
+      const screenshotPath = `https://s.wordpress.com/mshots/v1/${encodeURIComponent(normalizedUrl)}?w=1200`;
+>>>>>>> 2b1b25817ffb1301f7166d58bfdd10769f50a385
       setScreenshotUrl(screenshotPath);
 
       try {
