@@ -44,14 +44,17 @@ export default function ReportContent() {
   const [screenshotUrl, setScreenshotUrl] = useState("");
   const [pageData, setPageData] = useState<AnalysisResult["pageData"]>();
   const [loading, setLoading] = useState(true);
-  const [imageStatus, setImageStatus] = useState<"loading" | "loaded" | "error">("loading");
+  const [imageStatus, setImageStatus] = useState<"loading" | "loaded" | "error">(
+    "loading"
+  );
   const [error, setError] = useState("");
 
   const totalScore = Math.round(
     (scores.performance +
       scores.accessibility +
       scores.seo +
-      scores.design) / 4
+      scores.design) /
+      4
   );
 
   useEffect(() => {
@@ -63,7 +66,9 @@ export default function ReportContent() {
       setImageStatus("loading");
 
       const normalizedUrl = /^https?:\/\//i.test(url) ? url : `https://${url}`;
-      const screenshotPath = `https://s.wordpress.com/mshots/v1/${encodeURIComponent(normalizedUrl)}?w=1200`;
+      const screenshotPath = `https://s.wordpress.com/mshots/v1/${encodeURIComponent(
+        normalizedUrl
+      )}?w=1200`;
       setScreenshotUrl(screenshotPath);
 
       try {
@@ -88,7 +93,9 @@ export default function ReportContent() {
         setPageData(data.pageData);
       } catch (err) {
         console.error(err);
-        setError("Could not analyze this website. Some websites block automated scanning.");
+        setError(
+          "Could not analyze this website. Some websites block automated scanning."
+        );
       } finally {
         setLoading(false);
       }
@@ -140,7 +147,7 @@ export default function ReportContent() {
         <section className="mb-10 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
           <h2 className="mb-4 text-2xl font-semibold">Website Screenshot</h2>
 
-          <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 p-3 shadow-sm min-h-[420px]">
+          <div className="relative min-h-[420px] overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 p-3 shadow-sm">
             {imageStatus === "loading" && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
                 <div className="flex flex-col items-center gap-3">
@@ -163,7 +170,7 @@ export default function ReportContent() {
               alt={`Screenshot of ${url}`}
               onLoad={() => setImageStatus("loaded")}
               onError={() => setImageStatus("error")}
-              className={`w-full max-h-[500px] rounded-lg object-contain ${
+              className={`max-h-[500px] w-full rounded-lg object-contain ${
                 imageStatus === "error" ? "hidden" : "block"
               }`}
             />
@@ -183,24 +190,48 @@ export default function ReportContent() {
           <section className="mb-10 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
             <h2 className="mb-4 text-2xl font-semibold">Website Overview</h2>
             <div className="space-y-2 text-sm text-gray-700">
-              <p><strong>Domain:</strong> {url}</p>
-              <p><strong>Total Images:</strong> {pageData.imageCount}</p>
-              <p><strong>Internal Links:</strong> {pageData.internalLinks}</p>
-              <p><strong>External Links:</strong> {pageData.externalLinks}</p>
+              <p>
+                <strong>Domain:</strong> {url}
+              </p>
+              <p>
+                <strong>Total Images:</strong> {pageData.imageCount}
+              </p>
+              <p>
+                <strong>Internal Links:</strong> {pageData.internalLinks}
+              </p>
+              <p>
+                <strong>External Links:</strong> {pageData.externalLinks}
+              </p>
             </div>
           </section>
 
           <section className="mb-10 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
             <h2 className="mb-4 text-2xl font-semibold">Page Summary</h2>
             <div className="space-y-2 text-sm text-gray-700">
-              <p><strong>Title:</strong> {pageData.title}</p>
-              <p><strong>Meta description:</strong> {pageData.metaDescription}</p>
-              <p><strong>H1 count:</strong> {pageData.h1s.length}</p>
-              <p><strong>H2 count:</strong> {pageData.h2s.length}</p>
-              <p><strong>Buttons found:</strong> {pageData.buttons.length}</p>
-              <p><strong>Images found:</strong> {pageData.imageCount}</p>
-              <p><strong>Internal links:</strong> {pageData.internalLinks}</p>
-              <p><strong>External links:</strong> {pageData.externalLinks}</p>
+              <p>
+                <strong>Title:</strong> {pageData.title}
+              </p>
+              <p>
+                <strong>Meta description:</strong> {pageData.metaDescription}
+              </p>
+              <p>
+                <strong>H1 count:</strong> {pageData.h1s.length}
+              </p>
+              <p>
+                <strong>H2 count:</strong> {pageData.h2s.length}
+              </p>
+              <p>
+                <strong>Buttons found:</strong> {pageData.buttons.length}
+              </p>
+              <p>
+                <strong>Images found:</strong> {pageData.imageCount}
+              </p>
+              <p>
+                <strong>Internal links:</strong> {pageData.internalLinks}
+              </p>
+              <p>
+                <strong>External links:</strong> {pageData.externalLinks}
+              </p>
             </div>
           </section>
         </>
@@ -256,7 +287,9 @@ function ScoreCard({ title, score }: { title: string; score: number }) {
   }
 
   return (
-    <div className={`rounded-2xl border-2 ${borderColor} bg-white p-5 shadow-sm transition hover:shadow-md`}>
+    <div
+      className={`rounded-2xl border-2 ${borderColor} bg-white p-5 shadow-sm transition hover:shadow-md`}
+    >
       <h3 className="text-lg font-semibold text-gray-700">{title}</h3>
       <p className={`mt-2 text-3xl font-bold ${textColor}`}>
         {score}

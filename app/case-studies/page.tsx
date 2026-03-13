@@ -18,6 +18,7 @@ const studies = [
       "The redesign feels more modern, easier to scan, and more conversion-focused.",
   },
   {
+<<<<<<< HEAD
     title: "Operation Level Up",
     before: "/case-studies/business-before.png",
     after: "/case-studies/business-after.png",
@@ -31,6 +32,22 @@ const studies = [
     ],
     result:
       "The final redesign feels more professional, accessible, and easier for users to navigate.",
+=======
+    title: "Operation Level Up Website Redesign",
+    before: "/case-studies/business-before.png",
+    after: "/case-studies/business-after.png",
+    problem:
+      "The original website contained a cluttered navigation structure and unclear call-to-action messaging. Important actions such as requesting a solar quote or exploring available solutions were not immediately obvious, making the user journey less intuitive.",
+    improvements: [
+      "Simplified navigation structure",
+      "Introduced a clear 'Get Solar Quote' primary call-to-action",
+      "Added a secondary 'Explore Solutions' CTA",
+      "Improved hero section hierarchy",
+      "Reduced visual distractions and improved spacing",
+    ],
+    result:
+      "The redesigned concept improves clarity and guides users toward the primary goal — requesting solar solutions or exploring available services.",
+>>>>>>> 80365d441e2c6bed578a07aa31c847d067e6b3bd
   },
 ];
 
@@ -48,6 +65,12 @@ export default function CaseStudiesPage() {
       </nav>
 
       <section className="mx-auto max-w-6xl px-6 py-10">
+<<<<<<< HEAD
+=======
+        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+          Concept UX Redesign Case Studies
+        </p>
+>>>>>>> 80365d441e2c6bed578a07aa31c847d067e6b3bd
         <h2 className="mb-4 text-4xl font-bold">Before & After Case Studies</h2>
         <p className="mb-10 max-w-3xl text-gray-600">
           These redesign examples show how design problems can be identified and

@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
@@ -21,6 +22,27 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
+=======
+    "@sparticuz/chromium": "^143.0.4",
+    "@sparticuz/chromium-min": "^143.0.4",
+    "next": "^16.1.6",
+    "puppeteer-core": "^24.38.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "styled-jsx": "^5.1.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "@types/node": "20.19.37",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.27",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "postcss": "^8.5.8",
+    "puppeteer": "^24.38.0",
+    "tailwindcss": "^4.2.1",
+>>>>>>> 80365d441e2c6bed578a07aa31c847d067e6b3bd
     "typescript": "^5"
   }
 }
